@@ -73,76 +73,103 @@ var charSpec = [
   "[",
   "]",
   ";",
-  "'",
   ":",
   "<",
   ">",
   "?",
   ",",
-  ".",
   "/",
 ];
 var passwordOptions = [];
+var passwordGenerated = [];
+var forcedInputs = 0;
+var passwordLength;
 
-var start = function () {
+var writePassword = function () {
   window.alert(
     "Welcome to the Password Generator. You will be given a series of criteria from which to select."
   );
+  var passwordLengthPrompt = function () {
+    passwordLength = parseInt(
+      window.prompt(
+        "How long should your password be (Must be a value between 8 and 128)?"
+      )
+    );
+    if (isNaN(passwordLength)) {
+      window.alert("This input can only accept numbers. Try again.");
+      passwordLengthPrompt();
+    } else if (passwordLength < 8 || passwordLength > 128) {
+      window.alert("That is not a valid number. Try again.");
+      passwordLengthPrompt();
+    }
+  };
 
-  var passwordLength = window.prompt(
-    "How long should your password be (Must be a value between 8 and 128)?"
-  );
-  if (typeof passwordLength !== "number") {
-    window.alert("This input can only accept numbers. Try again.");
-    passwordLength();
-  } else if (passwordLength < 8 || passwordLength > 128) {
-    window.alert("That is not a valid number. Try again.");
-    passwordLength();
-  }
+  var charLowerPrompt = function () {
+    var charLowerQues = window.confirm(
+      "Would you like your password to have lowercase letters (Hit 'Okay' for yes and 'Cancel' for no)?"
+    );
+    if (charLowerQues) {
+      passwordOptions = passwordOptions.concat(charLower);
+      passwordGenerated.push(
+        charLower[Math.round(Math.random() * charLower.length)]
+      );
+      forcedInputs = forcedInputs + 1;
+    }
+  };
 
-  var charLowerPrompt = window.prompt(
-    "Would you like your password to have lowercase letters (Type 'yes' or 'no')?"
-  );
-  if (charLowerPrompt !== "yes" || charLowerPrompt !== "no") {
-    window.alert("That is not a valid input. Type 'yes' or 'no'.");
-    charLower();
-  }
-  if (charLowerPrompt === "yes") {
-    passwordOptions.push(charLower);
-  }
+  var charUpperPrompt = function () {
+    var charUpperQues = window.confirm(
+      "Would you like your password to have uppercase letters (Hit 'Okay' for yes and 'Cancel' for no)?"
+    );
+    if (charUpperQues) {
+      passwordOptions = passwordOptions.concat(charUpper);
+      passwordGenerated.push(
+        charUpper[Math.round(Math.random() * charUpper.length)]
+      );
+      forcedInputs = forcedInputs + 1;
+    }
+  };
 
-  var charUpperPrompt = window.prompt(
-    "Would you like your password to have uppercase letters (Type 'yes' or 'no')?"
-  );
-  if (charUpperPrompt !== "yes" || charUpperPrompt !== "no") {
-    window.alert("That is not a valid input. Type 'yes' or 'no'.");
-    charUpper();
-  }
-  if (charUpperPrompt === "yes") {
-    passwordOptions.push(charUpper);
-  }
+  var charNumbPrompt = function () {
+    charNumbQues = window.confirm(
+      "Would you like your password to have numbers (Hit 'Okay' for yes and 'Cancel' for no)?"
+    );
+    if (charNumbQues) {
+      passwordOptions = passwordOptions.concat(charNumb);
+      passwordGenerated.push(
+        charNumb[Math.round(Math.random() * charNumb.length)]
+      );
+      forcedInputs = forcedInputs + 1;
+    }
+  };
 
-  var charNumbPrompt = window.prompt(
-    "Would you like your password to have numbers (Type 'yes' or 'no')?"
-  );
-  if (charNumbPrompt !== "yes" || charNumbPrompt !== "no") {
-    window.alert("That is not a valid input. Type 'yes' or 'no'.");
-    charNumb();
-  }
-  if (charNumbPrompt === "yes") {
-    passwordOptions.push(charNumb);
-  }
+  var charSpecPrompt = function () {
+    charSpecQues = window.confirm(
+      "Would you like your password to have special characters (Hit 'Okay' for yes and 'Cancel' for no)?"
+    );
+    if (charSpecQues) {
+      passwordOptions = passwordOptions.concat(charSpec);
+      passwordGenerated.push(
+        charSpec[Math.round(Math.random() * charSpec.length)]
+      );
+      forcedInputs = forcedInputs + 1;
+    }
+  };
+  passwordLengthPrompt();
+  charLowerPrompt();
+  charUpperPrompt();
+  charNumbPrompt();
+  charSpecPrompt();
 
-  var charSpecPrompt = window.prompt(
-    "Would you like your password to have special characters (Type 'yes' or 'no')?"
-  );
-  if (charSpecPrompt !== "yes" || charSpecPrompt !== "no") {
-    window.alert("That is not a valid input. Type 'yes' or 'no'.");
-    charSpec();
+  for (let i = 1; i <= passwordLength - forcedInputs; i++) {
+    passwordGenerated.push(
+      passwordOptions[Math.round(Math.random() * passwordOptions.length)]
+    );
   }
-  if (charSpecPrompt === "yes") {
-    passwordOptions.push(charSpec);
-  }
+  console.log(passwordGenerated);
+  passwordGenerated = passwordGenerated.join("");
+  console.log(passwordGenerated);
+  //Because selecting yes to any of the first four options makes it such that they will always appear in that point of the password, we shuffle to avoid the first four types
 };
 
 // Get references to the #generate element
