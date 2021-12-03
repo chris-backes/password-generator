@@ -161,27 +161,30 @@ var writePassword = function () {
   charNumbPrompt();
   charSpecPrompt();
 
-  for (let i = 1; i <= passwordLength - forcedInputs; i++) {
+  for (let i = 0; i <= passwordLength - forcedInputs; i++) {
     passwordGenerated.push(
       passwordOptions[Math.round(Math.random() * passwordOptions.length)]
     );
   }
   console.log(passwordGenerated);
+  //Because selecting yes to any of the first four options makes it such that they will always appear in that point of the password, we shuffle to avoid the first four types always appearing in the same order
+  passwordGenerated = passwordGenerated.sort((a, b) => 0.5 - Math.random());
+  console.log(passwordGenerated);
   passwordGenerated = passwordGenerated.join("");
   console.log(passwordGenerated);
-  //Because selecting yes to any of the first four options makes it such that they will always appear in that point of the password, we shuffle to avoid the first four types
+
+  var passwordText = document.querySelector("#password");
+  passwordText.value = passwordGenerated;
+
+  passwordOptions = [];
+  passwordGenerated = [];
+  forcedInputs = 0;
 };
 
 // Get references to the #generate element
 var generateBtn = document.querySelector("#generate");
 
 // Write password to the #password input
-function writePassword() {
-  var password = generatePassword();
-  var passwordText = document.querySelector("#password");
-
-  passwordText.value = password;
-}
 
 // Add event listener to generate button
 generateBtn.addEventListener("click", writePassword);
