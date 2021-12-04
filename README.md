@@ -46,33 +46,27 @@ The global variables can be divided into two groups: arrays which store informat
 
 These arrays store the characters for upper case, lower case, numerical, and special characters, and get used in building the passwords in two different methods (discussed below).
 
-#### Information to be Stored
+### The Containing Function: writePassword()
 
-These arrays store information gathered during the window prompts/confirms that contain either the password itself or information used by the password.
+The button on the web page calls a function that contains all the functions necessary for the password to generate.
+
+#### Declared Variables
 
 ##### passwordOptions
 
 Stores the contents of the arrays in the above list that the user has determined to include in the constuction of the password.
 
-###### passwordGenerated
+##### passwordGenerated
 
 Stores the password as iti s being contructed
 
-###### forcedInputs
-
-Reduces the length of the passowrdLength number the user designated by the number of arrays the user chose to include in the window.confirm functions
-
-###### passwordLength
+##### passwordLength
 
 Stores the length of the password
 
-### The Container Function
+##### answerTicker
 
-The button on the web page calls a function that contains all the functions necessary for the password to generate.
-
-#### writePassword Function
-
-Contains functions which (some declared as variables, some not) begin upon the user clicking the "Generate Password" button
+Adds 1 to the variable for every yes answer. There is a condiitonal after the prompts to ensure that value is greater than 0 to move forward.
 
 #### passwordLengthPrompt
 
@@ -84,15 +78,18 @@ Contains functions which (some declared as variables, some not) begin upon the u
 
 charLowerPrompt; charUpperPrompt; charNumbPrompt; charSpecPrompt
 
-Each of these bring up a window.confirm function to select whether the password will include that array. If the user chooses to include the characters of that array, three things happen:
+Each of these bring up a window.confirm function to select whether the password will include that array. If the user chooses to include the characters of that array, four things happen:
 
 1. passwordOptions absorbs the contents of the respective array
 2. passwordGenerated receives on character from the array
-3. forcedInputs goes up by 1
+3. passwordLength goes down by one
+4. answerTicker goes up by one
 
 The second thing that occurs is most relevant here: it happens because it ensures that a member of that array will be included in the password. Later on, when characters are randomly selected from a single arracy including all options, it is not guaranteed that a member of that subset will be included in the password--in fact, in an eight character password, there is about a 36% chance that a numeral will not appear in a password which randomly selects from all subsets. By forcing the inclusion of at least one from each subset here, we ensure the criteria is met.
 
-All of these are declared as variables an immediately called.
+#### Checking for Positive Responses
+
+If somoene has answered no to all of the Array Prompts, they are told to select at least one option and are routed to the beginning.
 
 #### Password Generation (For Loop)
 
@@ -109,10 +106,6 @@ The password is still being stored as an array, and here we convert it to a stri
 #### Copying the password to the web page
 
 The password is the displayed on the browser window
-
-#### Wiping Variables
-
-The variables which store information are wiped so that the page can run again without needed to be refreshed. Only the passwordLength variable is left untouched, since it would get over written befroe it would get called again.
 
 ### Remaining features
 
