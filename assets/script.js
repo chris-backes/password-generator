@@ -195,7 +195,7 @@ var writePassword = function () {
   //If someone fails to choose any of the for options, this resets the prompts back to start.
   if (answerTicker === 0) {
     window.alert(
-      "you have failed to select at least one option. Please try again."
+      "You have failed to select at least one option. Please try again."
     );
     writePassword();
   }
